@@ -19,7 +19,7 @@ buildscript {
 
 allprojects {
     repositories {
-//        maven { url "https://dl.bintray.com/thelasterstar/maven/" }
+        // maven { url 'https://dl.bintray.com/thelasterstar/maven/' }
         google()
         mavenCentral()
         jcenter() // Warning: this repository is going to shut down soon
