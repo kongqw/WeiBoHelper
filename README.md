@@ -123,3 +123,10 @@ WeiBoHelper.shareWebpage("我是标题", "我是描述", "https://gank.io/images
 
 - 分享多图
 - 分享视频
+
+
+## 混淆配置
+
+```
+-keep class com.sina.weibo.sdk.** { *; }
+```
