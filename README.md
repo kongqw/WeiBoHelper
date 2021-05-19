@@ -21,7 +21,7 @@ Step 2. Add the dependency
 
 ``` gradle
 dependencies {
-    implementation 'com.github.kongqw:WeiBoHelper:1.1.0'
+    implementation 'com.github.kongqw:WeiBoHelper:1.1.1'
 }
 ```
 
@@ -81,7 +81,7 @@ android {
 
 导入微博SDK`aar`到项目中
 
-下载地址：[https://github.com/sinaweibosdk/weibo_android_sdk/tree/master/新版本以及文档](https://github.com/sinaweibosdk/weibo_android_sdk/tree/master/%E6%96%B0%E7%89%88%E6%9C%AC%E4%BB%A5%E5%8F%8A%E6%96%87%E6%A1%A3)
+下载地址：[https://github.com/sinaweibosdk/weibo_android_sdk/tree/master/2019SDK/aar](https://github.com/sinaweibosdk/weibo_android_sdk/tree/master/2019SDK/aar)
 
 ``` gradle
 implementation(name: 'openDefault-10.10.0', ext: 'aar')
