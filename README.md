@@ -21,7 +21,7 @@ Step 2. Add the dependency
 
 ``` gradle
 dependencies {
-    implementation 'com.github.kongqw:WeiBoHelper:1.0.1'
+    implementation 'com.github.kongqw:WeiBoHelper:1.1.0'
 }
 ```
 
