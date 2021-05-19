@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.kongqw.weibohelper">
+
+    <application>
+
+        <meta-data
+            android:name="weibo_app_id"
+            android:value="${WEIBO_APP_ID}" />
+
+        <activity
+            android:name=".RequestWeiBoActivity"
+            android:theme="@style/Transparent" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+
+            <!-- 元数据 -->
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+    </application>
+
+</manifest>
