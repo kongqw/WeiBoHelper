@@ -9,15 +9,15 @@ project.ext {
     ]
 
     constants = [
-            applicationId      : "com.magic.furolive",
+            applicationId      : "com.kongqw.weibohelper",
             group              : "com.github.kongqw",
-            WEIBO_APP_ID       : "97830691",
-            WEIBO_REDIRECT_URL : "https://api.weibo.com/oauth2/default.html",
-            WEIBO_SCOPE        : "email,direct_messages_read,direct_messages_write,friendships_groups_read,friendships_groups_write,statuses_to_me_read,follow_app_official_microblog,invitation_write",
+            WEIBO_APP_ID       : "xxx",
+            WEIBO_REDIRECT_URL : "xxx",
+            WEIBO_SCOPE        : "xxx",
 
-            SIGN_TORE_FILE_PATH: "../signatures/furongzhibo.jks",
-            SIGN_STORE_PASSWORD: "furolive2020",
-            SIGN_KEY_ALIAS     : "furolive",
-            SIGN_KEY_PASSWORD  : "furolive2020"
+            SIGN_TORE_FILE_PATH: "xxx",
+            SIGN_STORE_PASSWORD: "xxx",
+            SIGN_KEY_ALIAS     : "xxx",
+            SIGN_KEY_PASSWORD  : "xxx"
     ]
 }
