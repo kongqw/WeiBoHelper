@@ -87,6 +87,11 @@ class MainActivity : AppCompatActivity() {
             WeiBoHelper.startClientAuth(mWeiBoAuthListener)
         }
 
+        // 网页（H5）授权
+        mViewBinding.btnWebAuth.setOnClickListener {
+            WeiBoHelper.startWebAuth(mWeiBoAuthListener)
+        }
+
         // 分享文字
         mViewBinding.btnShareText.setOnClickListener {
             WeiBoHelper.shareText("我是分享到微博的文字！", mWeiBoShareListener)
@@ -94,12 +99,12 @@ class MainActivity : AppCompatActivity() {
 
         // 分享单图
         mViewBinding.btnShareSingleImage.setOnClickListener {
-//            WeiBoHelper.shareImage("https://gank.io/images/02eb8ca3297f4931ab64b7ebd7b5b89c", mWeiBoShareListener)
+            // WeiBoHelper.shareImage("https://gank.io/images/02eb8ca3297f4931ab64b7ebd7b5b89c", mWeiBoShareListener)
             WeiBoHelper.shareImage("https://t7.baidu.com/it/u=1819248061,230866778&fm=193&f=GIF", mWeiBoShareListener)
         }
         // 分享多图
         mViewBinding.btnShareImages.setOnClickListener {
-//            WeiBoHelper.shareImages("https://gank.io/images/02eb8ca3297f4931ab64b7ebd7b5b89c", mWeiBoShareListener)
+            // WeiBoHelper.shareImages("https://gank.io/images/02eb8ca3297f4931ab64b7ebd7b5b89c", mWeiBoShareListener)
             WeiBoHelper.shareImages("https://t7.baidu.com/it/u=1819248061,230866778&fm=193&f=GIF", mWeiBoShareListener)
         }
 
@@ -110,7 +115,7 @@ class MainActivity : AppCompatActivity() {
 
         // 分享网页
         mViewBinding.btnShareWebpage.setOnClickListener {
-//            WeiBoHelper.shareWebpage("我是标题", "我是描述", "https://gank.io/images/02eb8ca3297f4931ab64b7ebd7b5b89c", "https://www.baidu.com", mWeiBoShareListener)
+            // WeiBoHelper.shareWebpage("我是标题", "我是描述", "https://gank.io/images/02eb8ca3297f4931ab64b7ebd7b5b89c", "https://www.baidu.com", mWeiBoShareListener)
             WeiBoHelper.shareWebpage("我是标题", "我是描述", "https://t7.baidu.com/it/u=1819248061,230866778&fm=193&f=GIF", "https://www.baidu.com", mWeiBoShareListener)
         }
     }

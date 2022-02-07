@@ -75,5 +75,5 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     implementation project(path: ':weibohelper')
-    implementation(name: 'openDefault-10.10.0', ext: 'aar')
+    implementation 'io.github.sinaweibosdk:core:11.12.0@aar'
 }

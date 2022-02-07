@@ -16,6 +16,8 @@ object WeiBoHelper {
     lateinit var applicationContext: Context
     var isLoggable = false
 
+    var isRegistered = false
+
     fun init(context: Context, isLoggable: Boolean): Boolean {
         this.applicationContext = context
         this.isLoggable = isLoggable
@@ -80,6 +82,20 @@ object WeiBoHelper {
             return
         }
         RequestWeiBoActivity.startClientAuth()
+    }
+
+    /**
+     * 通过网页（H5）授权操作
+     * @param listener 授权回调
+     */
+    fun startWebAuth(listener: WeiBoAuthListener? = null) {
+        mWeiBoAuthListener = listener
+        // 检查微博是否安装
+        if (!AppUtils.isSinaInstalled()) {
+            mWeiBoAuthListener?.onNotInstall()
+            return
+        }
+        RequestWeiBoActivity.startWebAuth()
     }
 
     /**

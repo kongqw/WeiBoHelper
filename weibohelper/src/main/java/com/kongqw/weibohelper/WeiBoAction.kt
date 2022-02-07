@@ -8,6 +8,9 @@ enum class WeiBoAction {
     // 客户端授权登录
     CLIENT_AUTH,
 
+    // 指定网页（H5）授权登录
+    CLIENT_WEB,
+
     // 分享文字
     SHARE_TEXT,
 

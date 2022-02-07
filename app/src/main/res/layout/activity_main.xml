@@ -36,6 +36,16 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
+                android:id="@+id/btn_web_auth"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="网页（H5）授权"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
                 android:id="@+id/btn_share_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
