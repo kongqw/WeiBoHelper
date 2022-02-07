@@ -4,6 +4,7 @@ import android.content.Context
 import com.kongqw.weibohelper.entity.ShareWebpageEntity
 import com.kongqw.weibohelper.listener.WeiBoAuthListener
 import com.kongqw.weibohelper.listener.WeiBoShareListener
+import com.kongqw.weibohelper.util.AppUtils
 import com.kongqw.weibohelper.util.TransferUtils
 import com.sina.weibo.sdk.auth.Oauth2AccessToken
 import com.sina.weibo.sdk.auth.WbAuthListener
@@ -13,9 +14,11 @@ import com.sina.weibo.sdk.share.WbShareCallback
 object WeiBoHelper {
 
     lateinit var applicationContext: Context
+    var isLoggable = false
 
     fun init(context: Context, isLoggable: Boolean): Boolean {
-        applicationContext = context
+        this.applicationContext = context
+        this.isLoggable = isLoggable
         return true
     }
 
@@ -57,6 +60,11 @@ object WeiBoHelper {
      */
     fun startAuth(listener: WeiBoAuthListener? = null) {
         mWeiBoAuthListener = listener
+        // 检查微博是否安装
+        if (!AppUtils.isSinaInstalled()) {
+            mWeiBoAuthListener?.onNotInstall()
+            return
+        }
         RequestWeiBoActivity.startAuth()
     }
 
@@ -66,6 +74,11 @@ object WeiBoHelper {
      */
     fun startClientAuth(listener: WeiBoAuthListener? = null) {
         mWeiBoAuthListener = listener
+        // 检查微博是否安装
+        if (!AppUtils.isSinaInstalled()) {
+            mWeiBoAuthListener?.onNotInstall()
+            return
+        }
         RequestWeiBoActivity.startClientAuth()
     }
 
@@ -76,6 +89,11 @@ object WeiBoHelper {
      */
     fun shareText(text: String, listener: WeiBoShareListener? = null) {
         mWeiBoShareListener = listener
+        // 检查微博是否安装
+        if (!AppUtils.isSinaInstalled()) {
+            mWeiBoAuthListener?.onNotInstall()
+            return
+        }
         RequestWeiBoActivity.shareText(text)
     }
 
@@ -86,6 +104,11 @@ object WeiBoHelper {
      */
     fun shareImage(url: String, listener: WeiBoShareListener? = null) {
         mWeiBoShareListener = listener
+        // 检查微博是否安装
+        if (!AppUtils.isSinaInstalled()) {
+            mWeiBoAuthListener?.onNotInstall()
+            return
+        }
         RequestWeiBoActivity.shareImage(url)
     }
 
@@ -95,6 +118,11 @@ object WeiBoHelper {
     @Deprecated("暂不支持")
     fun shareImages(url: String, listener: WeiBoShareListener? = null) {
         mWeiBoShareListener = listener
+        // 检查微博是否安装
+        if (!AppUtils.isSinaInstalled()) {
+            mWeiBoAuthListener?.onNotInstall()
+            return
+        }
         RequestWeiBoActivity.shareImages(url)
     }
 
@@ -104,6 +132,11 @@ object WeiBoHelper {
     @Deprecated("暂不支持")
     fun shareVideo(listener: WeiBoShareListener? = null) {
         mWeiBoShareListener = listener
+        // 检查微博是否安装
+        if (!AppUtils.isSinaInstalled()) {
+            mWeiBoAuthListener?.onNotInstall()
+            return
+        }
         RequestWeiBoActivity.shareVideo()
     }
 
@@ -117,6 +150,11 @@ object WeiBoHelper {
      */
     fun shareWebpage(title: String, description: String, thumb: String, actionUrl: String, listener: WeiBoShareListener? = null) {
         mWeiBoShareListener = listener
+        // 检查微博是否安装
+        if (!AppUtils.isSinaInstalled()) {
+            mWeiBoAuthListener?.onNotInstall()
+            return
+        }
         val shareWebpageEntity = ShareWebpageEntity(title, description, thumb, actionUrl)
         RequestWeiBoActivity.shareWebpage(shareWebpageEntity)
     }

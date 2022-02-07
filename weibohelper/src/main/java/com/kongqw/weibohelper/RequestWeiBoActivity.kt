@@ -5,18 +5,17 @@ import android.graphics.Bitmap
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import com.bumptech.glide.Glide
 import com.kongqw.weibohelper.entity.ShareWebpageEntity
+import com.kongqw.weibohelper.util.Logger
 import com.kongqw.weibohelper.util.MetaUtil
 import com.sina.weibo.sdk.api.*
 import com.sina.weibo.sdk.auth.AuthInfo
 import com.sina.weibo.sdk.openapi.IWBAPI
 import com.sina.weibo.sdk.openapi.WBAPIFactory
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.util.*
@@ -25,6 +24,9 @@ import kotlin.collections.ArrayList
 internal class RequestWeiBoActivity : AppCompatActivity() {
 
     companion object {
+
+        private const val TAG = "RequestWeiBoActivity"
+
         /** 当前 DEMO 应用的 APP_KEY，第三方应用应该使用自己的 APP_KEY 替换该 APP_KEY  */
         // const val APP_KEY = "97830691"
 
@@ -144,9 +146,13 @@ internal class RequestWeiBoActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.i("RequestWeiBoActivity", "kongqwww mAppId = $mAppId")
-        Log.i("RequestWeiBoActivity", "kongqwww mRedirectUrl = $mRedirectUrl")
-        Log.i("RequestWeiBoActivity", "kongqwww mScope = $mScope")
+
+        Logger.i(TAG, "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+        Logger.i(TAG, "┃ mAppId = $mAppId")
+        Logger.i(TAG, "┃ mRedirectUrl = $mRedirectUrl")
+        Logger.i(TAG, "┃ mScope = $mScope")
+        Logger.i(TAG, "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+
         mWeiBoAction = (intent.getSerializableExtra(EXTRA_WEIBO_ACTION) as? WeiBoAction?).let { weiBoAction ->
             if (null == weiBoAction) {
                 finish()
@@ -182,11 +188,7 @@ internal class RequestWeiBoActivity : AppCompatActivity() {
             WeiBoAction.SHARE_IMAGES -> {
                 val url = intent.getStringExtra(EXTRA_SHARE_IMAGES) ?: ""
                 val data = ArrayList<String>()
-                //                data.add(url)
-                //                data.add(url)
-                data.add("https://img0.baidu.com/it/u=3036316726,676055399&fm=26&fmt=auto&gp=0.jpg")
-                data.add("https://img0.baidu.com/it/u=3036316726,676055399&fm=26&fmt=auto&gp=0.jpg")
-                data.add("https://img0.baidu.com/it/u=3036316726,676055399&fm=26&fmt=auto&gp=0.jpg")
+                data.add(url)
                 shareImages(data)
             }
             // 分享视频
@@ -238,23 +240,20 @@ internal class RequestWeiBoActivity : AppCompatActivity() {
      * 分享单张图片
      */
     private fun shareSingleImage(url: String) {
-        Observable.just(url)
-            .subscribeOn(Schedulers.io())
-            .map { Glide.with(this).asBitmap().load(url).submit().get() }
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy(
-                onNext = { bitmap ->
-                    val message = WeiboMultiMessage()
-                    val imageObject = ImageObject()
-                    imageObject.setImageData(bitmap)
-                    message.imageObject = imageObject
-                    mIWBAPI.shareMessage(message, true)
-                },
-                onComplete = {},
-                onError = {
-                    it.printStackTrace()
-                }
-            )
+        // 创建协程
+        GlobalScope.launch(Dispatchers.IO) {
+            try {
+                val bitmap = Glide.with(this@RequestWeiBoActivity).asBitmap().load(url).submit().get()
+                val message = WeiboMultiMessage()
+                val imageObject = ImageObject()
+                imageObject.setImageData(bitmap)
+                message.imageObject = imageObject
+                mIWBAPI.shareMessage(message, true)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                finishAfterTransition()
+            }
+        }
     }
 
     /**
@@ -265,31 +264,24 @@ internal class RequestWeiBoActivity : AppCompatActivity() {
      */
     @Deprecated("暂不支持")
     private fun shareImages(images: ArrayList<String>) {
-
-        Observable.just(images)
-            .subscribeOn(Schedulers.io())
-            .map {
-                val list = ArrayList<Uri>()
-                it.forEach { url ->
-                    val file: File = Glide.with(this).asFile().load(url).submit().get()
-                    list.add(Uri.fromFile(file))
+        // 创建协程
+        GlobalScope.launch(Dispatchers.IO) {
+            try {
+                val imageList = ArrayList<Uri>()
+                images.forEach { url ->
+                    val file: File = Glide.with(this@RequestWeiBoActivity).asFile().load(url).submit().get()
+                    imageList.add(Uri.fromFile(file))
                 }
-                return@map list
+                val message = WeiboMultiMessage()
+                val multiImageObject = MultiImageObject()
+                multiImageObject.imageList = imageList
+                message.multiImageObject = multiImageObject
+                mIWBAPI.shareMessage(message, true)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                finishAfterTransition()
             }
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy(
-                onNext = { imageList ->
-                    val message = WeiboMultiMessage()
-                    val multiImageObject = MultiImageObject()
-                    multiImageObject.imageList = imageList
-                    message.multiImageObject = multiImageObject
-                    mIWBAPI.shareMessage(message, true)
-                },
-                onComplete = {},
-                onError = {
-                    it.printStackTrace()
-                }
-            )
+        }
     }
 
     /**
@@ -299,39 +291,36 @@ internal class RequestWeiBoActivity : AppCompatActivity() {
      */
     @Deprecated("很少用，暂不支持")
     private fun shareVideo() {
-        //        val message = WeiboMultiMessage()
-        //        val videoSourceObject = VideoSourceObject()
-        //        mIWBAPI.shareMessage(message, true)
+        // val message = WeiboMultiMessage()
+        // val videoSourceObject = VideoSourceObject()
+        // mIWBAPI.shareMessage(message, true)
+        finishAfterTransition()
     }
 
     /**
      * 分享网页
      */
     private fun shareWebpage(shareWebpageEntity: ShareWebpageEntity) {
-        Observable.just("")
-            .subscribeOn(Schedulers.io())
-            .map { Glide.with(this).asBitmap().load(shareWebpageEntity.thumb).submit().get() }
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy(
-                onNext = { bitmap ->
-                    val message = WeiboMultiMessage()
+        GlobalScope.launch(Dispatchers.IO){
+            try {
+                val bitmap = Glide.with(this@RequestWeiBoActivity).asBitmap().load(shareWebpageEntity.thumb).submit().get()
+                val message = WeiboMultiMessage()
 
-                    val webpageObject = WebpageObject()
-                    webpageObject.identify = UUID.randomUUID().toString()
-                    webpageObject.title = shareWebpageEntity.title
-                    webpageObject.description = shareWebpageEntity.description
-                    webpageObject.thumbData = getThumbData(bitmap)
-                    webpageObject.actionUrl = shareWebpageEntity.actionUrl
-                    webpageObject.defaultText = shareWebpageEntity.title
+                val webpageObject = WebpageObject()
+                webpageObject.identify = UUID.randomUUID().toString()
+                webpageObject.title = shareWebpageEntity.title
+                webpageObject.description = shareWebpageEntity.description
+                webpageObject.thumbData = getThumbData(bitmap)
+                webpageObject.actionUrl = shareWebpageEntity.actionUrl
+                webpageObject.defaultText = shareWebpageEntity.title
 
-                    message.mediaObject = webpageObject
-                    mIWBAPI.shareMessage(message, true)
-                },
-                onComplete = {},
-                onError = {
-                    it.printStackTrace()
-                }
-            )
+                message.mediaObject = webpageObject
+                mIWBAPI.shareMessage(message, true)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                finishAfterTransition()
+            }
+        }
     }
 
     /**

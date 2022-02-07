@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import com.bumptech.glide.Glide
 import com.kongqw.weibo.databinding.ActivityMainBinding
 import com.kongqw.weibohelper.WeiBoHelper
 import com.kongqw.weibohelper.entity.WeiBoError
@@ -25,6 +24,10 @@ class MainActivity : AppCompatActivity() {
 
         override fun onLoadingEnd() {
             mViewBinding.loading.visibility = View.GONE
+        }
+
+        override fun onNotInstall() {
+            Toast.makeText(applicationContext, "微博未安装", Toast.LENGTH_SHORT).show()
         }
 
         override fun onComplete(token: WeiBoOauth2AccessToken?) {
@@ -48,6 +51,10 @@ class MainActivity : AppCompatActivity() {
 
         override fun onLoadingEnd() {
             mViewBinding.loading.visibility = View.GONE
+        }
+
+        override fun onNotInstall() {
+            Toast.makeText(applicationContext, "微博未安装", Toast.LENGTH_SHORT).show()
         }
 
         override fun onComplete() {
@@ -87,11 +94,13 @@ class MainActivity : AppCompatActivity() {
 
         // 分享单图
         mViewBinding.btnShareSingleImage.setOnClickListener {
-            WeiBoHelper.shareImage("https://gank.io/images/02eb8ca3297f4931ab64b7ebd7b5b89c", mWeiBoShareListener)
+//            WeiBoHelper.shareImage("https://gank.io/images/02eb8ca3297f4931ab64b7ebd7b5b89c", mWeiBoShareListener)
+            WeiBoHelper.shareImage("https://t7.baidu.com/it/u=1819248061,230866778&fm=193&f=GIF", mWeiBoShareListener)
         }
         // 分享多图
         mViewBinding.btnShareImages.setOnClickListener {
-            WeiBoHelper.shareImages("https://gank.io/images/02eb8ca3297f4931ab64b7ebd7b5b89c", mWeiBoShareListener)
+//            WeiBoHelper.shareImages("https://gank.io/images/02eb8ca3297f4931ab64b7ebd7b5b89c", mWeiBoShareListener)
+            WeiBoHelper.shareImages("https://t7.baidu.com/it/u=1819248061,230866778&fm=193&f=GIF", mWeiBoShareListener)
         }
 
         // 分享视频
@@ -101,7 +110,8 @@ class MainActivity : AppCompatActivity() {
 
         // 分享网页
         mViewBinding.btnShareWebpage.setOnClickListener {
-            WeiBoHelper.shareWebpage("我是标题", "我是描述", "https://gank.io/images/02eb8ca3297f4931ab64b7ebd7b5b89c", "https://www.baidu.com", mWeiBoShareListener)
+//            WeiBoHelper.shareWebpage("我是标题", "我是描述", "https://gank.io/images/02eb8ca3297f4931ab64b7ebd7b5b89c", "https://www.baidu.com", mWeiBoShareListener)
+            WeiBoHelper.shareWebpage("我是标题", "我是描述", "https://t7.baidu.com/it/u=1819248061,230866778&fm=193&f=GIF", "https://www.baidu.com", mWeiBoShareListener)
         }
     }
 }

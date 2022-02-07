@@ -1,16 +1,6 @@
 package com.kongqw.weibohelper.listener
 
-import com.kongqw.weibohelper.entity.WeiBoError
-
-interface WeiBoShareListener {
-
-    fun onLoadingStart()
-
-    fun onLoadingEnd()
+interface WeiBoShareListener : WeiBoListener {
 
     fun onComplete()
-
-    fun onError(error: WeiBoError?)
-
-    fun onCancel()
 }
