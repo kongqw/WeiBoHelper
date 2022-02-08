@@ -107,7 +107,7 @@ object WeiBoHelper {
         mWeiBoShareListener = listener
         // 检查微博是否安装
         if (!AppUtils.isSinaInstalled()) {
-            mWeiBoAuthListener?.onNotInstall()
+            mWeiBoShareListener?.onNotInstall()
             return
         }
         RequestWeiBoActivity.shareText(text)
@@ -122,7 +122,7 @@ object WeiBoHelper {
         mWeiBoShareListener = listener
         // 检查微博是否安装
         if (!AppUtils.isSinaInstalled()) {
-            mWeiBoAuthListener?.onNotInstall()
+            mWeiBoShareListener?.onNotInstall()
             return
         }
         RequestWeiBoActivity.shareImage(url)
@@ -136,7 +136,7 @@ object WeiBoHelper {
         mWeiBoShareListener = listener
         // 检查微博是否安装
         if (!AppUtils.isSinaInstalled()) {
-            mWeiBoAuthListener?.onNotInstall()
+            mWeiBoShareListener?.onNotInstall()
             return
         }
         RequestWeiBoActivity.shareImages(url)
@@ -150,7 +150,7 @@ object WeiBoHelper {
         mWeiBoShareListener = listener
         // 检查微博是否安装
         if (!AppUtils.isSinaInstalled()) {
-            mWeiBoAuthListener?.onNotInstall()
+            mWeiBoShareListener?.onNotInstall()
             return
         }
         RequestWeiBoActivity.shareVideo()
@@ -168,7 +168,7 @@ object WeiBoHelper {
         mWeiBoShareListener = listener
         // 检查微博是否安装
         if (!AppUtils.isSinaInstalled()) {
-            mWeiBoAuthListener?.onNotInstall()
+            mWeiBoShareListener?.onNotInstall()
             return
         }
         val shareWebpageEntity = ShareWebpageEntity(title, description, thumb, actionUrl)
